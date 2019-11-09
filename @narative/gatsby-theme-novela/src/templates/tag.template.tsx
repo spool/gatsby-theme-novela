@@ -7,16 +7,16 @@ import Layout from '@components/Layout';
 import Paginator from '@components/Navigation/Navigation.Paginator';
 
 import AuthorArticles from '../sections/author/Author.Articles';
-import CategoryHero from '../sections/category/Category.Hero';
+import TagHero from '../sections/tag/Tag.Hero';
 
-function CategoryPage({ location, pageContext }) {
-  const { group: articles, category } = pageContext;
+function TagPage({ location, pageContext }) {
+  const { group: articles, tag } = pageContext;
 
   return (
     <Layout>
-      <SEO pathname={location.pathname} title={category} />
+      <SEO pathname={location.pathname} title={tag} />
       <Section narrow>
-        <CategoryHero category={category} />
+        <TagHero tag={tag} />
         <AuthorArticles articles={articles} />
         <AuthorPaginator>
           <Paginator {...pageContext} />
@@ -27,7 +27,7 @@ function CategoryPage({ location, pageContext }) {
   );
 }
 
-export default CategoryPage;
+export default TagPage;
 
 const AuthorsGradient = styled.div`
   position: absolute;

@@ -13,7 +13,7 @@ const templates = {
   articles: path.resolve(templatesDirectory, 'articles.template.tsx'),
   article: path.resolve(templatesDirectory, 'article.template.tsx'),
   author: path.resolve(templatesDirectory, 'author.template.tsx'),
-  category: path.resolve(templatesDirectory, 'category.template.tsx'),
+  tag: path.resolve(templatesDirectory, 'tag.template.tsx'),
 };
 
 const query = require('../data/data.query');
@@ -51,7 +51,7 @@ module.exports = async ({ actions: { createPage }, graphql }, themeOptions) => {
   const {
     basePath = '/',
     authorsPath = '/authors',
-    categoryPath = '/category',
+    tagPath = '/tag',
     authorsPage = true,
     pageLength = 6,
     sources = {},
@@ -136,15 +136,15 @@ module.exports = async ({ actions: { createPage }, graphql }, themeOptions) => {
   `);
   }
 
-  const categories = articles.reduce((acc, article) => {
-    return [...acc, ...article.categories];
+  const tags = articles.reduce((acc, article) => {
+    return [...acc, ...article.tags];
   }, []);
 
-  const uniqueCategories = [...new Set(categories)];
+  const uniqueTags = [...new Set(tags)];
 
-  if (uniqueCategories.length === 0 || uniqueCategories.length === 0) {
+  if (uniqueTags.length === 0 || uniqueTags.length === 0) {
     throw new Error(`
-    You must have at least one Category to create category page.
+    You must have at least one Tag to create tag page.
   `);
   }
 
@@ -216,7 +216,7 @@ module.exports = async ({ actions: { createPage }, graphql }, themeOptions) => {
       context: {
         article,
         authors: authorsThatWroteTheArticle,
-        categories: article.categories,
+        tags: article.tags,
         basePath,
         slug: article.slug,
         id: article.id,
@@ -258,37 +258,37 @@ module.exports = async ({ actions: { createPage }, graphql }, themeOptions) => {
     });
   }
   /**
-   * Creating main category pages example
-   *  /category/gatsby
-   * /category/gatsby/2
+   * Creating main tag pages example
+   *  /tag/gatsby
+   * /tag/gatsby/2
    */
-  log('Creating', 'category pages');
-  uniqueCategories.forEach(category => {
-    let allArticlesOfTheCategory;
+  log('Creating', 'tag pages');
+  uniqueTags.forEach(tag => {
+    let allArticlesOfTheTag;
     try {
-      allArticlesOfTheCategory = articles.filter(article =>
-        article.categories.includes(category),
+      allArticlesOfTheTag = articles.filter(article =>
+        article.tags.includes(tag),
       );
     } catch (error) {
       throw new Error(`
-        We could not find the Articles for: "${category}".
-        Double check the categories field is specified in your post and the name
-        matches a specified category.
-        Category name: ${category}
+        We could not find the Articles for: "${tag}".
+        Double check the tags field is specified in your post and the name
+        matches a specified tag.
+        Tag name: ${tag}
         ${error}
       `);
     }
-    const path = slugify(category, categoryPath);
+    const path = slugify(tag, tagPath);
 
     createPaginatedPages({
-      edges: allArticlesOfTheCategory,
+      edges: allArticlesOfTheTag,
       pathPrefix: path,
       createPage,
       pageLength,
-      pageTemplate: templates.category,
+      pageTemplate: templates.tag,
       buildPath: buildPaginatedPath,
       context: {
-        category,
+        tag,
         originalPath: path,
         skip: pageLength,
         limit: pageLength,

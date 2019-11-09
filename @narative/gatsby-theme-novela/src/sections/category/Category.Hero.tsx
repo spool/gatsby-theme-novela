@@ -3,15 +3,15 @@ import styled from '@emotion/styled';
 
 import mediaqueries from '@styles/media';
 
-const CategoryHero = ({ category }) => {
+const TagHero = ({ tag }) => {
   return (
     <Hero>
-      <Heading>{category}</Heading>
+      <Heading>{tag}</Heading>
     </Hero>
   );
 };
 
-export default CategoryHero;
+export default TagHero;
 
 const Hero = styled.div`
   position: relative;

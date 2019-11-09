@@ -42,7 +42,7 @@ function Article({ pageContext, location }) {
   const results = useStaticQuery(siteQuery);
   const name = results.allSite.edges[0].node.siteMetadata.name;
 
-  const { article, authors, mailchimp, next, categories } = pageContext;
+  const { article, authors, mailchimp, next, tags } = pageContext;
 
   useEffect(() => {
     const calculateBodySize = throttle(() => {
@@ -84,7 +84,7 @@ function Article({ pageContext, location }) {
       <ArticleHero
         article={article}
         authors={authors}
-        categories={categories}
+        tags={tags}
       />
       <ArticleAside contentHeight={contentHeight}>
         <Progress contentHeight={contentHeight} />
